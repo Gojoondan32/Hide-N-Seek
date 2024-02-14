@@ -40,10 +40,14 @@ public class Runner_Pathfinding : MonoBehaviour
         if(Vector3.Distance(transform.position, _targetDoor.Position) < 0.1f){
             _isMoving = false;
             _targetDoor.Arrived(this);
-            Debug.Log(_currentDoor.gameObject.name);
+            
         }
         
     }
 
-    public void SetCurrentDoor(Base_Door door) => _currentDoor = door;
+    public void SetCurrentDoor(Base_Door door){
+        _currentDoor = door;
+        Debug.Log(_currentDoor.gameObject.name);
+        
+    } 
 }

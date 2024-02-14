@@ -15,12 +15,11 @@ public class Base_Door : MonoBehaviour
     }
 
     public virtual void Arrived(Runner_Pathfinding runnerTransform = null){
-        Debug.Log("Arrived at door");
         SetCurrentDoor(runnerTransform);
     }
 
-    protected void SetCurrentDoor(Runner_Pathfinding runnerTransform){
-        runnerTransform.SetCurrentDoor(this);
+    protected void SetCurrentDoor(Runner_Pathfinding runnerTransform, Base_Door door = null){
+        runnerTransform.SetCurrentDoor(door ?? this);
     }
 
 }
