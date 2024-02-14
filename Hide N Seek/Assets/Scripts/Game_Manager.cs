@@ -21,23 +21,27 @@ public class Game_Manager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
         
+        Game_State_Manager.Instance.OnGameStateChange += HandleGameStateChange;
     }
     // Start is called before the first frame update
     void Start()
     {
-        InitialiseGame(); //! Temporary (call this from an event or something else later on)
-        MoveRunners(); //! Temporary (call this from an event or something else later on)
+        Game_State_Manager.Instance.SetGameState(GameState.RunnerTurn); //! Temporarily setting the game state to RunnerTurn
     }
 
-    private void InitialiseGame(){
+    private void HandleGameStateChange(GameState gameState){
+        switch(gameState){
+            case GameState.RunnerTurn:
+                HandleRunnerTurn();
+                break;
+        }
+    }
+
+    private void HandleRunnerTurn(){
         _amountOfRunnerMoves = 10;
+        MoveRunners();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //if(Input.GetMouseButtonDown(0)) OnMoveRunners?.Invoke();
-    }
 
     private void MoveRunners(){
         if(_amountOfRunnerMoves > 0){
@@ -46,6 +50,7 @@ public class Game_Manager : MonoBehaviour
             _amountOfRunnerMoves--;
             OnMoveRunners?.Invoke();
         }
+        else Game_State_Manager.Instance.SetGameState(GameState.PlayerTurn); // Runners have picked their doors and now it's the players turn
     }
 
     public void RunnersFinishedRunning(){
@@ -53,11 +58,15 @@ public class Game_Manager : MonoBehaviour
     }
 
     public void PlayerClickedDoor(Base_Door door){
+        Game_State_Manager.Instance.SetGameState(GameState.RevealDoors);
         // Open all the doors (will require a door manager)
         // Compare the players door with the runners door
         if(_runner.CurrentDoor == door){
             Debug.Log("Player clicked the correct door");
-        } else {
+            // Increment the players score
+            // 
+        } 
+        else {
             Debug.Log("Player clicked the wrong door");
         }
     }
