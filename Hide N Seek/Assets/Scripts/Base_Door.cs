@@ -14,7 +14,7 @@ public class Base_Door : MonoBehaviour
             return _doorPosition.position;
         }
     }
-    
+
     public virtual void Arrived(Runner_Pathfinding runnerTransform = null){
         SetCurrentDoor(runnerTransform);
     }
@@ -22,6 +22,8 @@ public class Base_Door : MonoBehaviour
     protected void SetCurrentDoor(Runner_Pathfinding runnerTransform, Base_Door door = null){
         runnerTransform.SetCurrentDoor(door ?? this);
     }
+
+    public Transform GetDoorTransform() => _doorPosition;
 
     public virtual void OpenDoors(){
         // Play the door open animation

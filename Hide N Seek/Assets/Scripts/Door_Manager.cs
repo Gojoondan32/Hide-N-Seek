@@ -36,4 +36,9 @@ public class Door_Manager : MonoBehaviour
             Game_State_Manager.Instance.SetGameState(GameState.RunnerTurn);
         }
     }
+
+    public Base_Door GetRandomDoor(){
+        Random.InitState(System.DateTime.Now.Millisecond); // Seed the random number generator
+        return _doors[Random.Range(0, _doors.Count)];
+    }
 }

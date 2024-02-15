@@ -17,14 +17,20 @@ public class Runner_Pathfinding : MonoBehaviour
         Game_Manager.Instance.OnMoveRunners += Move;
 
         _isMoving = false;
+    }
+
+    public void InitRunnerState(Base_Door door){
+        // This should only be called on a runner at the start of the game
         _isMimic = false;
-        // Pick a random door to start
+        SetCurrentDoor(door);
+        transform.position = door.GetDoorTransform().position;
     }
 
     public void InitMimicState(Base_Door door){
         // This should only be called on a mimic runner
         _isMimic = true;
         SetCurrentDoor(door);
+        transform.position = door.GetDoorTransform().position;
     }
     
     // Move to be called by event
@@ -55,4 +61,8 @@ public class Runner_Pathfinding : MonoBehaviour
     }
 
     public void SetCurrentDoor(Base_Door door) => CurrentDoor = door;
+
+    private void OnDestroy() {
+        Game_Manager.Instance.OnMoveRunners -= Move;
+    }
 }

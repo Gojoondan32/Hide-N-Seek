@@ -15,6 +15,7 @@ public class Game_Manager : MonoBehaviour
     #region Private Variables
     [SerializeField] private UI_Manager _uiManager;
     [SerializeField] private Runner_Pathfinding _runner; //! The runner should never be destroyed
+    [SerializeField] private Door_Manager _doorManager;
     private int _amountOfRunnerMoves;
     private Base_Door _doorPlayerPicked;
     #endregion
@@ -33,6 +34,9 @@ public class Game_Manager : MonoBehaviour
 
     private void HandleGameStateChange(GameState gameState){
         switch(gameState){
+            case GameState.MainMenu:
+                _runner.InitRunnerState(_doorManager.GetRandomDoor());
+                break;
             case GameState.RunnerTurn:
                 HandleRunnerTurn();
                 break;

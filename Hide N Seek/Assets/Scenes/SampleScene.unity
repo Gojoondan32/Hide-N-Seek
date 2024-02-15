@@ -6822,6 +6822,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uiManager: {fileID: 2076809814}
   _runner: {fileID: 6571921091428448583}
+  _doorManager: {fileID: 291212455}
 --- !u!1 &1688472091
 GameObject:
   m_ObjectHideFlags: 0
