@@ -13,6 +13,7 @@ public class Game_Manager : MonoBehaviour
     public event MoveRunnersDelegate OnMoveRunners;
     #endregion
     #region Private Variables
+    [SerializeField] private UI_Manager _uiManager;
     [SerializeField] private Runner_Pathfinding _runner; //! The runner should never be destroyed
     private int _amountOfRunnerMoves;
     #endregion
@@ -26,7 +27,7 @@ public class Game_Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Game_State_Manager.Instance.SetGameState(GameState.RunnerTurn); //! Temporarily setting the game state to RunnerTurn
+        Game_State_Manager.Instance.SetGameState(GameState.MainMenu);
     }
 
     private void HandleGameStateChange(GameState gameState){
@@ -64,10 +65,12 @@ public class Game_Manager : MonoBehaviour
         if(_runner.CurrentDoor == door){
             Debug.Log("Player clicked the correct door");
             // Increment the players score
-            // 
+            _uiManager.AddToPlayerScore(1);
         } 
         else {
             Debug.Log("Player clicked the wrong door");
+            // Decrement the players lives
+            _uiManager.RemoveFromPlayerLives(1);
         }
     }
 }
