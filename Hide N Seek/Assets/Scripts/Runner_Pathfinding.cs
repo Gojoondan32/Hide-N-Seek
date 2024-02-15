@@ -12,7 +12,7 @@ public class Runner_Pathfinding : MonoBehaviour
     private Base_Door _targetDoor;
     private bool _isMoving;
     private float _speed = 5f;
-    private bool _isMimic;
+    [SerializeField]private bool _isMimic;
     private void Awake(){
         Game_Manager.Instance.OnMoveRunners += Move;
 
@@ -31,6 +31,7 @@ public class Runner_Pathfinding : MonoBehaviour
         _isMimic = true;
         SetCurrentDoor(door);
         transform.position = door.GetDoorTransform().position;
+        Game_State_Manager.Instance.OnGameStateChange += DestroyMimic;
     }
     
     // Move to be called by event
@@ -52,7 +53,7 @@ public class Runner_Pathfinding : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(transform.position, _targetDoor.Position, _speed * Time.deltaTime);
         transform.rotation = Quaternion.AngleAxis(Vector3.SignedAngle(Vector3.forward, _targetDoor.Position - transform.position, Vector3.up), Vector3.up);
-        if(Vector3.Distance(transform.position, _targetDoor.Position) < 0.1f){
+        if(Vector3.Distance(transform.position, _targetDoor.Position) < 0.01f){
             _isMoving = false;
             _targetDoor.Arrived(this);
             if(!_isMimic) Game_Manager.Instance.RunnersFinishedRunning(); // Only call this if the runner is not a mimic
@@ -62,7 +63,16 @@ public class Runner_Pathfinding : MonoBehaviour
 
     public void SetCurrentDoor(Base_Door door) => CurrentDoor = door;
 
+    private void DestroyMimic(GameState gameState){
+        if(!_isMimic) return;
+
+        if(gameState == GameState.PlayerTurn) Destroy(gameObject);
+            
+        
+    }
+
     private void OnDestroy() {
         Game_Manager.Instance.OnMoveRunners -= Move;
+        Game_State_Manager.Instance.OnGameStateChange -= DestroyMimic;
     }
 }

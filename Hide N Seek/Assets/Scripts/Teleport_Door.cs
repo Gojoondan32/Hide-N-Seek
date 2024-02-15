@@ -5,7 +5,7 @@ using UnityEngine;
 public class Teleport_Door : Base_Door
 {
     [SerializeField] private Base_Door _linkedDoor;
-    public override void Arrived(Runner_Pathfinding runnerTransform = null)
+    public override void Arrived(Runner_Pathfinding runnerTransform)
     {
         runnerTransform.transform.position = _linkedDoor.Position;
         SetCurrentDoor(runnerTransform, _linkedDoor);

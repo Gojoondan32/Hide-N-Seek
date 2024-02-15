@@ -15,7 +15,7 @@ public class Base_Door : MonoBehaviour
         }
     }
 
-    public virtual void Arrived(Runner_Pathfinding runnerTransform = null){
+    public virtual void Arrived(Runner_Pathfinding runnerTransform){
         SetCurrentDoor(runnerTransform);
     }
 
