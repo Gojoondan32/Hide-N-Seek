@@ -16,6 +16,7 @@ public class Game_Manager : MonoBehaviour
     [SerializeField] private UI_Manager _uiManager;
     [SerializeField] private Runner_Pathfinding _runner; //! The runner should never be destroyed
     private int _amountOfRunnerMoves;
+    private Base_Door _doorPlayerPicked;
     #endregion
     private void Awake()
     {
@@ -59,18 +60,22 @@ public class Game_Manager : MonoBehaviour
     }
 
     public void PlayerClickedDoor(Base_Door door){
+        _doorPlayerPicked = door;
         Game_State_Manager.Instance.SetGameState(GameState.RevealDoors);
-        // Open all the doors (will require a door manager)
+    }
+
+    public void CheckPlayersDoor(){
         // Compare the players door with the runners door
-        if(_runner.CurrentDoor == door){
+        if (_runner.CurrentDoor == _doorPlayerPicked){
             Debug.Log("Player clicked the correct door");
             // Increment the players score
             _uiManager.AddToPlayerScore(1);
-        } 
-        else {
+        }
+        else{
             Debug.Log("Player clicked the wrong door");
             // Decrement the players lives
             _uiManager.RemoveFromPlayerLives(1);
         }
     }
+
 }

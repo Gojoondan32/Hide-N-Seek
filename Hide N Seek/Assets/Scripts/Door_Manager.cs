@@ -14,20 +14,26 @@ public class Door_Manager : MonoBehaviour
     private void HandleGameStateChange(GameState gameState){
         if(gameState != GameState.RevealDoors) return;
 
-        // Play the door open animation
-        StartCoroutine(OpenDoors());
+        StartCoroutine(RotateDoors());
     }
 
-    private IEnumerator OpenDoors(){
-        float time = 0;
-        while(time < 2){
-            time += Time.deltaTime;
-            foreach (var door in _doors){
-                door.transform.rotation = Quaternion.Slerp(door.transform.rotation, Quaternion.Euler(0, 90, 0), time);
-            }
-            yield return null;
+    private IEnumerator RotateDoors(){
+        // Play the door open animation
+        foreach (Base_Door door in _doors){
+            door.OpenDoors();
         }
-        Debug.Log("Doors are open");
-        //Game_State_Manager.Instance.SetGameState(GameState.PlayerTurn);
+
+        yield return new WaitForSeconds(1f);
+        Game_Manager.Instance.CheckPlayersDoor();
+        yield return new WaitForSeconds(1f);
+
+        // Play the door close animation
+        foreach (Base_Door door in _doors){
+            door.CloseDoors();
+        }
+
+        if(Game_State_Manager.Instance.CurrentGameState != GameState.GameOver){
+            Game_State_Manager.Instance.SetGameState(GameState.RunnerTurn);
+        }
     }
 }
