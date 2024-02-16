@@ -10,8 +10,11 @@ public class Runner_Pathfinding : MonoBehaviour
     [SerializeField] private Base_Door _currentDoor;
     public Base_Door CurrentDoor {get {return _currentDoor;} private set {_currentDoor = value;}}
     private Base_Door _targetDoor;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private Rigidbody _rigidbody; // Ony used for checking the velocity of the runner
     private bool _isMoving;
     private float _speed = 5f;
+    public float Speed {get {return _speed;} set {_speed = value;}}
     [SerializeField]private bool _isMimic;
     private void Awake(){
         Game_Manager.Instance.OnMoveRunners += Move;
@@ -26,9 +29,10 @@ public class Runner_Pathfinding : MonoBehaviour
         transform.position = door.GetDoorTransform().position;
     }
 
-    public void InitMimicState(Base_Door door){
+    public void InitMimicState(Base_Door door, float speed){
         // This should only be called on a mimic runner
         _isMimic = true;
+        _speed = speed;
         SetCurrentDoor(door);
         transform.position = door.GetDoorTransform().position;
         Game_State_Manager.Instance.OnGameStateChange += DestroyMimic;
@@ -45,6 +49,7 @@ public class Runner_Pathfinding : MonoBehaviour
             // Move to the right door
             _targetDoor = CurrentDoor.RightDoor;
         }
+        _animator.SetBool("Run", true);
         _isMoving = true;
     }
 
@@ -56,9 +61,19 @@ public class Runner_Pathfinding : MonoBehaviour
         if(Vector3.Distance(transform.position, _targetDoor.Position) < 0.01f){
             _isMoving = false;
             _targetDoor.Arrived(this);
+            _animator.SetBool("Run", false);
+            transform.rotation = Quaternion.Euler(0, 180, 0);
             if(!_isMimic) Game_Manager.Instance.RunnersFinishedRunning(); // Only call this if the runner is not a mimic
         }
         
+    }
+
+    private void HandleMovementAnimations(){
+        if(_rigidbody.velocity.magnitude > 0.1f){
+            _animator.SetBool("IsMoving", true);
+        } else {
+            _animator.SetBool("IsMoving", false);
+        }
     }
 
     public void SetCurrentDoor(Base_Door door) => CurrentDoor = door;

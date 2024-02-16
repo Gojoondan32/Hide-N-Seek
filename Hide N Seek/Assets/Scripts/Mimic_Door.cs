@@ -8,7 +8,7 @@ public class Mimic_Door : Base_Door
     public override void Arrived(Runner_Pathfinding runnerTransform){
         base.Arrived(runnerTransform);
         Runner_Pathfinding mimicRunner = Instantiate(_mimicRunner, runnerTransform.transform.position, Quaternion.identity);
-        mimicRunner.InitMimicState(this);
+        mimicRunner.InitMimicState(this, runnerTransform.Speed);
     }
 
 

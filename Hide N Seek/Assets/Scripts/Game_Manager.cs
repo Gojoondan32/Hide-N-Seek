@@ -80,6 +80,7 @@ public class Game_Manager : MonoBehaviour
             // Decrement the players lives
             _uiManager.RemoveFromPlayerLives(1);
         }
+        _runner.Speed += 0.25f;
     }
 
 }
