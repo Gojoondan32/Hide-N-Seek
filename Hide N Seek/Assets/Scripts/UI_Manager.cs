@@ -10,9 +10,10 @@ public class UI_Manager : MonoBehaviour
     private int _playerLives;
     [SerializeField] private List<GameObject> _lives;
     private int _startingLives = 3;
-    [SerializeField] private TextMeshProUGUI _scoreText;
+    [SerializeField] private TextMeshProUGUI _inGameScoreText;
+    [SerializeField] private TextMeshProUGUI _gameOverScoreText;
 
-    #region References
+    #region Screens
     [SerializeField] private GameObject _mainMenu;
     [SerializeField] private GameObject _inGame;
     [SerializeField] private GameObject _gameOver;
@@ -25,6 +26,7 @@ public class UI_Manager : MonoBehaviour
         switch (gameState) {
             case GameState.MainMenu:
                 _playerScore = 0;
+                _inGameScoreText.text = _playerScore.ToString();
                 _playerLives = _startingLives;
                 ResetLivesUI();
                 HideAllScreens();
@@ -36,6 +38,7 @@ public class UI_Manager : MonoBehaviour
             case GameState.GameOver:
                 HideAllScreens();
                 _gameOver.SetActive(true);
+                _gameOverScoreText.text = _playerScore.ToString();
                 break;
             default:
                 HideAllScreens();
@@ -60,7 +63,7 @@ public class UI_Manager : MonoBehaviour
 
     public void AddToPlayerScore(int amount) {
         _playerScore += amount;
-        _scoreText.text = _playerScore.ToString();
+        _inGameScoreText.text = _playerScore.ToString();
     }
 
     public void RemoveFromPlayerLives(int amount) {
@@ -75,5 +78,9 @@ public class UI_Manager : MonoBehaviour
         foreach (GameObject life in _lives) {
             life.SetActive(true);
         }
+    }
+
+    public void RestartGame() {
+        Game_State_Manager.Instance.SetGameState(GameState.MainMenu);
     }
 }

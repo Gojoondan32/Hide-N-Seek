@@ -35,6 +35,7 @@ public class Game_Manager : MonoBehaviour
     private void HandleGameStateChange(GameState gameState){
         switch(gameState){
             case GameState.MainMenu:
+                _runner.Speed = 5f; // Should be in the runner class but it should work for now
                 _runner.InitRunnerState(_doorManager.GetRandomDoor());
                 break;
             case GameState.RunnerTurn:

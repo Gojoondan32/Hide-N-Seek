@@ -32,7 +32,7 @@ public class Door_Manager : MonoBehaviour
             door.CloseDoors();
         }
 
-        if(Game_State_Manager.Instance.CurrentGameState != GameState.GameOver){
+        if(Game_State_Manager.Instance.CurrentGameState == GameState.RevealDoors){
             Game_State_Manager.Instance.SetGameState(GameState.RunnerTurn);
         }
     }
