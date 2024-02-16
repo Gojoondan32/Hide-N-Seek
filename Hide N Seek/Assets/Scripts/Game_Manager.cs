@@ -73,11 +73,13 @@ public class Game_Manager : MonoBehaviour
         // Compare the players door with the runners door
         if (_runner.CurrentDoor == _doorPlayerPicked){
             Debug.Log("Player clicked the correct door");
+            Audio_Manager.Instance.Play("correct", _doorPlayerPicked.Position, 0.5f);
             // Increment the players score
             _uiManager.AddToPlayerScore(1);
         }
         else{
             Debug.Log("Player clicked the wrong door");
+            Audio_Manager.Instance.Play("wrong", _doorPlayerPicked.Position, 0.5f);
             // Decrement the players lives
             _uiManager.RemoveFromPlayerLives(1);
         }

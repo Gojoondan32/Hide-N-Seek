@@ -29,12 +29,14 @@ public class Base_Door : MonoBehaviour
         // Play the door open animation
         _animator.SetBool("Close", false);
         _animator.SetBool("Open", true);
+        Audio_Manager.Instance.Play("door_open", _doorPosition.position, 0.25f);
     }
 
     public virtual void CloseDoors(){
         // Play the door close animation
         _animator.SetBool("Open", false);
         _animator.SetBool("Close", true);
+        Audio_Manager.Instance.Play("door_close", _doorPosition.position, 0.5f);
     }
 
 }

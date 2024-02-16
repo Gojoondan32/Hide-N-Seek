@@ -38,7 +38,7 @@ public class UI_Manager : MonoBehaviour
             case GameState.GameOver:
                 HideAllScreens();
                 _gameOver.SetActive(true);
-                _gameOverScoreText.text = _playerScore.ToString();
+                _gameOverScoreText.text = "Score: " +  _playerScore.ToString();
                 break;
             default:
                 HideAllScreens();
@@ -54,6 +54,7 @@ public class UI_Manager : MonoBehaviour
     }
 
     public void StartGame() {
+        Audio_Manager.Instance.Play("ui", Vector3.zero, 0.1f);
         Game_State_Manager.Instance.SetGameState(GameState.RunnerTurn);
     }
 
@@ -70,6 +71,7 @@ public class UI_Manager : MonoBehaviour
         _playerLives -= amount;
         _lives[_playerLives].SetActive(false);
         if (_playerLives <= 0) {
+            Audio_Manager.Instance.Play("defeat", Vector3.zero, 0.5f);
             Game_State_Manager.Instance.SetGameState(GameState.GameOver);
         }
     }
@@ -81,6 +83,7 @@ public class UI_Manager : MonoBehaviour
     }
 
     public void RestartGame() {
+        Audio_Manager.Instance.Play("ui", Vector3.zero, 0.1f);
         Game_State_Manager.Instance.SetGameState(GameState.MainMenu);
     }
 }
